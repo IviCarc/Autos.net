@@ -11,7 +11,10 @@ namespace Autos.Models
         public int Km { get; set; }
         public string Trabajo { get; set; }
 
-        [ForeignKey(nameof(AutoClienteId))]
-        public int AutoClienteId { get; set; }
+        public int AutoClienteID { get; set; }
+        [ForeignKey("AutoClienteID")]
+        public virtual AutoCliente AutoCliente{ get; set; }
+
+
     }
 }

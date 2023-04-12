@@ -5,18 +5,15 @@ namespace Autos.Models
 {
     public class AutoCliente
     {
-        [Key]
         public int Id { get; set; }
         public string Patente { get; set; }
+        public int ClienteID { get; set; }
+        [ForeignKey("ClienteID")]
+        public virtual Cliente Cliente { get; set; }
 
-        [ForeignKey(nameof(ClienteId))]
-        public int ClienteId { get; set; }
-
-        [ForeignKey(nameof(AutoId))]
-        public int AutoId { get; set; }
-
-
-
+        public int AutoID { get; set; }
+        [ForeignKey("AutoID")]
+        public virtual Auto Auto{ get; set; }
        
     }
 }
