@@ -23,41 +23,30 @@ namespace Autos.Controllers
         public async Task<IActionResult> Get()
         {
             var rep = await db.Reparaciones.ToListAsync();
+
+            AutoCliente auCl;
+
             List<Dictionary<string, string>> response = new List<Dictionary<string, string>>();
-            foreach (var re in rep)
+
+            for (int i = 0; i < rep.Count; i++)
             {
+
                 Dictionary<string, string> obj = new Dictionary<string, string>();
-                //var auCl = await db.AutoClientes.FindAsync(re.Id);
-                //Console.WriteLine(auCl.AutoID.ToString());
-                //Console.WriteLine(auCl.ClienteID.ToString());
+                auCl = await db.AutoClientes.FindAsync(rep[i].AutoClienteID);
 
-                
-                var auto = await db.Autos.FindAsync(1);
-                var cl = await db.Clientes.FindAsync(1);
+                Console.WriteLine(auCl);
 
+                var auto = await db.Autos.FindAsync(auCl.AutoID);
+                var cl = await db.Clientes.FindAsync(auCl.ClienteID);
 
                 obj.Add("auto", auto.Modelo);
-                obj.Add("cliente", cl.Name + cl.LastName);
-                obj.Add("km", re.Km.ToString());
-                //response.Add("patente", auCl.Patente);
-                obj.Add("fecha", re.Fecha.ToString());
-                obj.Add("trabajo", re.Trabajo);
-
-                //foreach (KeyValuePair<string, string> kvp in obj)
-                //{
-                //    Console.WriteLine(kvp);
-                //}
+                obj.Add("cliente", cl.Name +" " + cl.LastName);
+                obj.Add("km", rep[i].Km.ToString());
+                obj.Add("patente", auCl.Patente);
+                obj.Add("fecha", rep[i].Fecha.ToString());
+                obj.Add("trabajo", rep[i].Trabajo);
 
                 response.Add(obj);
-
-                obj.Clear();
-            }
-            foreach (var item in response)
-            {
-                foreach (KeyValuePair<string, string> kvp in item)
-                {
-                    Console.WriteLine(kvp);
-                }
             }
             return Ok(response);
         }
